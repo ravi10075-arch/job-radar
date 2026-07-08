@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>job-radar</title>
+<style>
+  :root {
+    --bg: #10141b;
+    --panel: #171d27;
+    --panel-line: #262e3b;
+    --amber: #ffb020;
+    --amber-dim: #8a6626;
+    --text: #d7dbe2;
+    --text-dim: #6b7280;
+    --green: #3ddc84;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', -apple-system, Segoe UI, sans-serif;
+    min-height: 100vh;
+  }
+
+  @font-face {
+    font-family: 'IBM Plex Mono';
+    src: local('IBM Plex Mono'), local('Courier New');
+  }
+
+  .board-frame {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+
+  header.board-header {
+    border-bottom: 2px solid var(--panel-line);
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .board-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 28px;
+    letter-spacing: 2px;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .board-subtitle {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  .board-stats {
+    display: flex;
+    gap: 24px;
+    font-family: 'IBM Plex Mono', monospace;
+    text-align: right;
+  }
+
+  .stat { display: flex; flex-direction: column; }
+  .stat-value { font-size: 22px; color: var(--amber); }
+  .stat-value.new { color: var(--green); }
+  .stat-label { font-size: 10px; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+
+  .col-headers {
+    display: grid;
+    grid-template-columns: 64px 1fr 160px 140px 90px 90px;
+    gap: 12px;
+    padding: 0 16px 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--panel-line);
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 64px 1fr 160px 140px 90px 90px;
+    gap: 12px;
+    align-items: center;
+    background: var(--panel);
+    border: 1px solid var(--panel-line);
+    border-radius: 2px;
+    padding: 14px 16px;
+    margin-top: 8px;
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color 0.15s ease;
+  }
+
+  .row:hover { border-color: var(--amber-dim); }
+
+  .row .score {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 20px;
+    color: var(--amber);
+  }
+  .row .score.high { color: var(--green); }
+
+  .row .title-cell .title {
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .row .title-cell .reason {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 3px;
+  }
+
+  .row .company, .row .location {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  .row .source-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    border: 1px solid var(--panel-line);
+    border-radius: 2px;
+    padding: 3px 6px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .new-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--bg);
+    background: var(--green);
+    border-radius: 2px;
+    padding: 3px 6px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--text-dim);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .empty-state .flicker { color: var(--amber); font-size: 18px; margin-bottom: 8px; }
+
+  /* split-flap style flicker-in, respects reduced motion */
+  @media (prefers-reduced-motion: no-preference) {
+    .row { animation: flap-in 0.4s ease both; }
+  }
+  @keyframes flap-in {
+    0% { opacity: 0; transform: translateY(-4px); filter: blur(1px); }
+    100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+  }
+
+  @media (max-width: 720px) {
+    .col-headers { display: none; }
+    .row {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+    .row .score { font-size: 16px; }
+  }
+
+  a:focus-visible, .row:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 2px;
+  }
+</style>
+</head>
+<body>
+
+<div class="board-frame">
+  <header class="board-header">
+    <div>
+      <p class="board-title">job-radar</p>
+      <p class="board-subtitle" id="last-run">loading last scan...</p>
+    </div>
+    <div class="board-stats">
+      <div class="stat">
+        <span class="stat-value" id="stat-total">–</span>
+        <span class="stat-label">tracked</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value new" id="stat-new">–</span>
+        <span class="stat-label">new today</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="col-headers">
+    <span>Score</span>
+    <span>Role</span>
+    <span>Company</span>
+    <span>Location</span>
+    <span>Source</span>
+    <span>Status</span>
+  </div>
+
+  <div id="job-list"></div>
+</div>
+
+<script>
+async function loadJobs() {
+  const listEl = document.getElementById('job-list');
+  try {
+    const res = await fetch('./jobs.json?_=' + Date.now());
+    if (!res.ok) throw new Error('no data yet');
+    const data = await res.json();
+
+    document.getElementById('stat-total').textContent = data.total_jobs ?? 0;
+    document.getElementById('stat-new').textContent = data.new_today ?? 0;
+    const lastRun = data.last_run ? new Date(data.last_run) : null;
+    document.getElementById('last-run').textContent = lastRun
+      ? 'last scan: ' + lastRun.toLocaleString()
+      : 'no scan recorded yet';
+
+    if (!data.jobs || data.jobs.length === 0) {
+      listEl.innerHTML = emptyState('No matching postings yet. The first scan will populate this board.');
+      return;
+    }
+
+    listEl.innerHTML = data.jobs.map(rowHtml).join('');
+  } catch (e) {
+    listEl.innerHTML = emptyState('No jobs.json found yet — the daily scan hasn\'t run for the first time.');
+    document.getElementById('last-run').textContent = 'awaiting first scan';
+  }
+}
+
+function rowHtml(job) {
+  const scoreClass = job.match_score >= 80 ? 'high' : '';
+  const statusHtml = job.is_new
+    ? '<span class="new-badge">NEW</span>'
+    : '<span class="source-tag">seen ' + (job.first_seen || '') + '</span>';
+
+  return `
+    <a class="row" href="${escapeAttr(job.url || '#')}" target="_blank" rel="noopener noreferrer">
+      <span class="score ${scoreClass}">${job.match_score ?? '–'}</span>
+      <span class="title-cell">
+        <div class="title">${escapeHtml(job.title || 'Untitled role')}</div>
+        <div class="reason">${escapeHtml(job.match_reason || '')}</div>
+      </span>
+      <span class="company">${escapeHtml(job.company || '')}</span>
+      <span class="location">${escapeHtml(job.location || '')}</span>
+      <span class="source-tag">${escapeHtml(job.source || '')}</span>
+      ${statusHtml}
+    </a>
+  `;
+}
+
+function emptyState(msg) {
+  return `<div class="empty-state"><div class="flicker">▂▃▅▂▇▅▂▃</div>${escapeHtml(msg)}</div>`;
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+function escapeAttr(str) {
+  return String(str).replace(/"/g, '&quot;');
+}
+
+loadJobs();
+</script>
+
+</body>
+</html>

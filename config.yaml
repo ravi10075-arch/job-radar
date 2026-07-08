@@ -1,0 +1,61 @@
+# job-radar config
+# Edit this file to tune what the scanner looks for. No code changes needed.
+
+profile:
+  # Weighted keywords used to score every posting 0-100. No API key needed -
+  # this is plain, transparent, tunable matching. Higher weight = matters more.
+  # A hit in the job TITLE counts at full weight; a hit only in the description
+  # counts at 40% weight. Edit this list freely as your positioning shifts -
+  # this is the single most important thing to tune over time.
+  keyword_weights:
+    "Product Security Manager": 10
+    "Security Compliance Project Manager": 10
+    "Cybersecurity Project Manager": 9
+    "Security Engineering Process": 9
+    "Project Security Manager": 9
+    "TARA": 8
+    "Vehicle Security Engineer": 8
+    "ISO 21434": 7
+    "ISO/SAE 21434": 7
+    "CycurHSM": 7
+    "AUTOSAR": 6
+    "HSM": 5
+    "automotive cybersecurity": 7
+    "embedded security": 6
+    "functional safety": 5
+    "ASPICE": 5
+    "PMP": 6
+    "project management": 4
+    "stakeholder management": 3
+
+  # Minimum score (0-100) for a job to be included in the dashboard as a "match"
+  min_score: 40
+
+search:
+  # Free-text queries sent to Adzuna. Keep these broad-ish; the scorer filters quality.
+  keywords:
+    - "Product Security Manager"
+    - "Cybersecurity Project Manager automotive"
+    - "TARA ISO 21434"
+    - "Security Engineering Process"
+    - "Vehicle Security Engineer"
+    - "Functional Safety Project Manager"
+
+  # Adzuna country codes to search (de = Germany, ch = Switzerland)
+  countries:
+    - de
+    - ch
+
+  # Max results pulled per keyword per country per run (keep modest to control API usage)
+  results_per_query: 20
+
+# Specific companies whose career pages we watch directly via their public
+# Greenhouse job board API: https://boards-api.greenhouse.io/v1/boards/<slug>/jobs
+# Find a company's slug from their careers URL, e.g. job-boards.eu.greenhouse.io/moia -> "moia"
+greenhouse_companies:
+  - moia
+  - rivian      # example — replace/add real slugs as you find them
+
+notifications:
+  # Dashboard-only for now (per your choice). Leave email/telegram blank.
+  mode: dashboard
