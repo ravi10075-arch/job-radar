@@ -1,7 +1,7 @@
 {
-  "last_run": "2026-07-08T11:11:06.731675Z",
+  "last_run": "2026-07-08T11:12:56.736893Z",
   "total_jobs": 5,
-  "new_today": 3,
+  "new_today": 0,
   "jobs": [
     {
       "id": "adzuna-5330329782",
@@ -17,7 +17,7 @@
       "match_score": 61,
       "match_reason": "Matched: TARA, automotive cybersecurity (title)",
       "first_seen": "2026-07-08",
-      "is_new": true
+      "is_new": false
     },
     {
       "id": "adzuna-5757704315",
@@ -65,7 +65,7 @@
       "match_score": 30,
       "match_reason": "Matched: functional safety (title)",
       "first_seen": "2026-07-08",
-      "is_new": true
+      "is_new": false
     },
     {
       "id": "adzuna-5791629957",
@@ -81,7 +81,7 @@
       "match_score": 30,
       "match_reason": "Matched: functional safety (title)",
       "first_seen": "2026-07-08",
-      "is_new": true
+      "is_new": false
     }
   ]
 }
