@@ -1,6 +1,39 @@
 {
-  "last_run": null,
-  "total_jobs": 0,
-  "new_today": 0,
-  "jobs": []
+  "last_run": "2026-07-08T10:28:49.103451Z",
+  "total_jobs": 2,
+  "new_today": 2,
+  "jobs": [
+    {
+      "id": "adzuna-5757704315",
+      "source": "adzuna",
+      "title": "Senior Vehicle Security Engineer (all genders)",
+      "company": "MOIA",
+      "location": "Deutschland",
+      "url": "https://www.adzuna.de/details/5757704315?utm_medium=api&utm_source=3661ae42",
+      "description": "Join us as a Senior Vehicle Security Engineer (all genders) and help safeguard the future of autonomous mobility at MOIA! At MOIA, vehicle security is a cornerstone of trust in autonomous mobility. As a Senior Vehicle Security Engineer you’ll be part of a dedicated team that ensures our autonomous mobility platform is secure, resilient, and compliant with mobility industry standards. You’ll work across the full product lifecycle of our fully autonomous vehicles like the ID.Buzz AD—from concept …",
+      "posted_at": "2026-06-09T23:28:35Z",
+      "search_keyword": "TARA ISO 21434",
+      "country": "de",
+      "match_score": 48,
+      "match_reason": "Matched: Vehicle Security Engineer (title)",
+      "first_seen": "2026-07-08",
+      "is_new": true
+    },
+    {
+      "id": "greenhouse-4769020101",
+      "source": "greenhouse",
+      "title": "Senior Vehicle Security Engineer (all genders)",
+      "company": "moia",
+      "location": "Berlin, Germany; Hamburg, Germany; Hannover, Germany; Munich, Germany; Wolfsburg, Germany",
+      "url": "https://job-boards.eu.greenhouse.io/moia/jobs/4769020101",
+      "description": "",
+      "posted_at": "2026-06-15T04:39:34-04:00",
+      "search_keyword": null,
+      "country": null,
+      "match_score": 48,
+      "match_reason": "Matched: Vehicle Security Engineer (title)",
+      "first_seen": "2026-07-08",
+      "is_new": true
+    }
+  ]
 }
