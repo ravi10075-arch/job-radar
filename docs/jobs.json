@@ -1,7 +1,7 @@
 {
-  "last_run": "2026-07-10T13:23:03.507567Z",
+  "last_run": "2026-07-11T10:37:12.601113Z",
   "total_jobs": 8,
-  "new_today": 1,
+  "new_today": 0,
   "jobs": [
     {
       "id": "adzuna-5795566547",
@@ -17,7 +17,7 @@
       "match_score": 54,
       "match_reason": "Matched: Cybersecurity Project Manager (title)",
       "first_seen": "2026-07-10",
-      "is_new": true
+      "is_new": false
     },
     {
       "id": "adzuna-5795160458",
